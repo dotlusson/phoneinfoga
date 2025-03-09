@@ -32,4 +32,5 @@ RUN chmod +x /usr/local/bin/phoneinfoga
 EXPOSE 8080
 
 # 7. Запускаем API
-CMD ["/usr/local/bin/phoneinfoga", "serve"]
+# CMD ["/usr/local/bin/phoneinfoga", "serve"]
+CMD ["/usr/local/bin/phoneinfoga", "serve", "--port", "8080"]
