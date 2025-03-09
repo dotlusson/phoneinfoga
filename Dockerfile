@@ -12,16 +12,24 @@ WORKDIR /app
 RUN apk add --update --no-cache git make bash build-base
 COPY . .
 COPY --from=client_builder /app/dist ./web/client/dist
+RUN go mod tidy
 RUN go get -v -t -d ./...
 RUN make install-tools
 RUN make build
 
-# 3. Финальный образ (Запуск API)
+# 3. Финальный образ (Alpine)
 FROM alpine:3.18
-COPY --from=go_builder /app/bin/phoneinfoga /app/phoneinfoga
+WORKDIR /root/
 
-# Исправляем порт (меняем с 5000 на 8080)
+# 4. Добавляем необходимые зависимости
+RUN apk add --no-cache bash ca-certificates
+
+# 5. Копируем скомпилированный Go-бинарник
+COPY --from=go_builder /app/bin/phoneinfoga /usr/local/bin/phoneinfoga
+RUN chmod +x /usr/local/bin/phoneinfoga
+
+# 6. Открываем порт 8080
 EXPOSE 8080
 
-# Запускаем API-сервер
-CMD ["/app/phoneinfoga", "serve"]
+# 7. Запускаем API
+CMD ["/usr/local/bin/phoneinfoga", "serve"]
