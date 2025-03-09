@@ -33,4 +33,5 @@ EXPOSE 8080
 
 # 7. Запускаем API
 # CMD ["/usr/local/bin/phoneinfoga", "serve"]
-CMD ["/usr/local/bin/phoneinfoga", "serve", "--port", "8080"]
+# CMD ["/usr/local/bin/phoneinfoga", "serve", "--port", "8080"]
+CMD ["/usr/local/bin/phoneinfoga", "serve", "--port", "8080", "--debug"]
